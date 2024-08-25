@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Not Verified User</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        h1 {
+            color: #f44336;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>User Not Verified</h1>
+    <p>The user is not recognized.</p>
+    <a href="/" onclick="resetWebcam()">Back to Login</a>
+    <script>
+        function resetWebcam() {
+            fetch('/reset_webcam')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Webcam reset successfully');
+                    } else {
+                        console.log('Failed to reset webcam');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error resetting webcam:', error);
+                });
+        }
+    </script>
+</body>
+</html>

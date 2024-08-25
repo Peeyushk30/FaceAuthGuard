@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Recognition Webcam</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .video-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .verified-user {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            display: none;
+        }
+        .error-message {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #f44336;
+            color: white;
+            border-radius: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Face Recognition Webcam</h1>
+    <div class="video-container">
+        <img id="video-feed" src="{{ url_for('video_feed') }}" width="640" height="480">
+        <div id="verified-user" class="verified-user"></div>
+        <div id="error-message" class="error-message"></div>
+    </div>
+
+    <script>
+        const videoFeed = document.getElementById('video-feed');
+        const verifiedUserDiv = document.getElementById('verified-user');
+        const errorMessageDiv = document.getElementById('error-message');
+        const username = new URLSearchParams(window.location.search).get('username');
+
+        function checkUserVerified() {
+            fetch(`/user_verified?username=${username}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.verified) {
+                        window.location.href = `/user/${data.user}`;
+                    } else {
+                        window.location.href = '/not_verified_user'; // Redirect to the not verified user page
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching user verification status:', error);
+                });
+        }
+
+        setInterval(checkUserVerified, 1000);
+    </script>
+</body>
+</html>
